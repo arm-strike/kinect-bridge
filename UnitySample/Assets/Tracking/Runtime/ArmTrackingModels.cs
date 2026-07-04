@@ -5,7 +5,6 @@ using CommonArmTrackingJointCollection = KinectBridge.Tracking.ArmTrackingJointC
 using CommonArmTrackingJointSample = KinectBridge.Tracking.ArmTrackingJointSample;
 using CommonArmTrackingMetrics = KinectBridge.Tracking.ArmTrackingMetrics;
 using CommonArmTrackingPacket = KinectBridge.Tracking.ArmTrackingPacket;
-using CommonTrackingSourceStatus = KinectBridge.Tracking.TrackingSourceStatus;
 
 namespace Tracking.Runtime
 {
@@ -19,6 +18,14 @@ namespace Tracking.Runtime
         NotTracked = 0,
         Inferred = 1,
         Tracked = 2
+    }
+
+    public enum TrackingSourceStatus
+    {
+        Disconnected = 0,
+        NoPerson = 1,
+        Tracking = 2,
+        TrackingButNormalizationInvalid = 3
     }
 
     [Serializable]
@@ -216,7 +223,7 @@ namespace Tracking.Runtime
     {
         bool IsConnected { get; }
         bool IsTracked { get; }
-        CommonTrackingSourceStatus Status { get; }
+        TrackingSourceStatus Status { get; }
         string LastReceiveError { get; }
         ArmTrackingFrame LatestFrame { get; }
     }

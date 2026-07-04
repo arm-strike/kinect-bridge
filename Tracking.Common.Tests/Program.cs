@@ -9,6 +9,10 @@ namespace KinectBridge.Tracking.Tests
         {
             TestRunner runner = new TestRunner();
             runner.Run("JSON roundtrip", TestJsonRoundtrip);
+            runner.Run("wire decoder accepts tracked packet", TestWireDecoderAcceptsTrackedPacket);
+            runner.Run("wire decoder rejects invalid sessionId", TestWireDecoderRejectsInvalidSessionId);
+            runner.Run("wire decoder rejects tracked:false extras", TestWireDecoderRejectsTrackedFalseExtras);
+            runner.Run("wire decoder rejects invalid UTF-8", TestWireDecoderRejectsInvalidUtf8);
             runner.Run("tracked:false omits optional fields", TestTrackedFalseOmission);
             runner.Run("normalization", TestNormalization);
             runner.Run("normalization rejects tiny shoulders", TestNormalizationRejectsTinyShoulders);
@@ -34,6 +38,55 @@ namespace KinectBridge.Tracking.Tests
             Assert.Equal(packet.trackingId, roundtrip.trackingId, "trackingId");
             Assert.NotNull(roundtrip.joints, "joints");
             Assert.Equal(packet.joints.handLeft.x, roundtrip.joints.handLeft.x, "handLeft.x");
+        }
+
+        private static void TestWireDecoderAcceptsTrackedPacket()
+        {
+            string sessionId = Guid.NewGuid().ToString("D");
+            string json = BuildWirePacketJson(sessionId, true, 42, true);
+
+            WirePacketParseResult result;
+            bool ok = WirePacketDecoder.TryParseJson(json, out result);
+            Assert.True(ok, "wire parse");
+            Assert.NotNull(result, "parse result");
+            Assert.NotNull(result.Packet, "packet");
+            Assert.Equal(sessionId, result.Packet.sessionId, "sessionId");
+            Assert.True(result.Packet.tracked, "tracked");
+            Assert.Equal(42L, result.Packet.trackingId.Value, "trackingId");
+            Assert.NotNull(result.Packet.joints, "joints");
+            Assert.Equal(0f, result.Packet.joints.shoulderCenter.x, 0.0001f, "shoulderCenter.x");
+        }
+
+        private static void TestWireDecoderRejectsInvalidSessionId()
+        {
+            string json = BuildWirePacketJson("session-1", true, 42, true);
+
+            WirePacketParseResult result;
+            bool ok = WirePacketDecoder.TryParseJson(json, out result);
+            Assert.False(ok, "wire parse should fail");
+            Assert.NotNull(result, "parse result");
+            Assert.Equal(WirePacketValidationError.InvalidSessionId, result.Error, "error");
+            Assert.NotNull(result.ErrorMessage, "error message");
+        }
+
+        private static void TestWireDecoderRejectsTrackedFalseExtras()
+        {
+            string json = BuildWirePacketJson(Guid.NewGuid().ToString("D"), false, 99, true);
+
+            WirePacketParseResult result;
+            bool ok = WirePacketDecoder.TryParseJson(json, out result);
+            Assert.False(ok, "wire parse should fail");
+            Assert.NotNull(result, "parse result");
+            Assert.Equal(WirePacketValidationError.UnexpectedTrackedFalseFields, result.Error, "error");
+        }
+
+        private static void TestWireDecoderRejectsInvalidUtf8()
+        {
+            WirePacketParseResult result;
+            bool ok = WirePacketDecoder.TryParseUtf8(new byte[] { 0xC3, 0x28 }, out result);
+            Assert.False(ok, "wire parse should fail");
+            Assert.NotNull(result, "parse result");
+            Assert.Equal(WirePacketValidationError.InvalidUtf8, result.Error, "error");
         }
 
         private static void TestTrackedFalseOmission()
@@ -192,6 +245,48 @@ namespace KinectBridge.Tracking.Tests
             Assert.False(untrackedFrame.Tracked, "untracked frame");
             Assert.Null(untrackedFrame.TrackingId, "trackingId cleared");
             Assert.Null(untrackedFrame.RawJoints, "joints cleared");
+        }
+
+        private static string BuildWirePacketJson(string sessionId, bool tracked, long? trackingId, bool includeJoints)
+        {
+            string json = "{\"version\":1,\"sessionId\":\"" + sessionId + "\",\"frameId\":10,\"timestampMs\":20,\"tracked\":" + (tracked ? "true" : "false");
+
+            if (trackingId.HasValue)
+            {
+                json += ",\"trackingId\":" + trackingId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            if (includeJoints)
+            {
+                json += ",\"joints\":" + BuildWireJointCollectionJson();
+            }
+
+            return json + "}";
+        }
+
+        private static string BuildWireJointCollectionJson()
+        {
+            return "{"
+                + "\"shoulderCenter\":" + BuildWireJointJson(0f, 1.4f, 2.0f) + ","
+                + "\"shoulderLeft\":" + BuildWireJointJson(-0.2f, 1.4f, 2.0f) + ","
+                + "\"elbowLeft\":" + BuildWireJointJson(-0.3f, 1.1f, 2.0f) + ","
+                + "\"wristLeft\":" + BuildWireJointJson(-0.35f, 0.85f, 2.0f) + ","
+                + "\"handLeft\":" + BuildWireJointJson(-0.4f, 0.8f, 2.0f) + ","
+                + "\"shoulderRight\":" + BuildWireJointJson(0.2f, 1.4f, 2.0f) + ","
+                + "\"elbowRight\":" + BuildWireJointJson(0.3f, 1.1f, 2.0f) + ","
+                + "\"wristRight\":" + BuildWireJointJson(0.35f, 0.85f, 2.0f) + ","
+                + "\"handRight\":" + BuildWireJointJson(0.4f, 0.8f, 2.0f)
+                + "}";
+        }
+
+        private static string BuildWireJointJson(float x, float y, float z)
+        {
+            return string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "{{\"x\":{0},\"y\":{1},\"z\":{2},\"state\":2}}",
+                x,
+                y,
+                z);
         }
 
         private static ArmTrackingPacket BuildTrackedPacket()

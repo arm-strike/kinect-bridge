@@ -8,7 +8,6 @@ using UnityEngine;
 using CommonArmTrackingFrame = KinectBridge.Tracking.ArmTrackingFrame;
 using CommonArmTrackingPacket = KinectBridge.Tracking.ArmTrackingPacket;
 using CommonArmTrackingStateMachine = KinectBridge.Tracking.ArmTrackingStateMachine;
-using CommonTrackingSourceStatus = KinectBridge.Tracking.TrackingSourceStatus;
 using CommonWirePacketDecoder = KinectBridge.Tracking.WirePacketDecoder;
 using CommonWirePacketParseResult = KinectBridge.Tracking.WirePacketParseResult;
 
@@ -43,10 +42,10 @@ namespace Tracking.Runtime
 
         public bool IsTracked
         {
-            get { return Status == CommonTrackingSourceStatus.Tracking || Status == CommonTrackingSourceStatus.TrackingButNormalizationInvalid; }
+            get { return Status == TrackingSourceStatus.Tracking || Status == TrackingSourceStatus.TrackingButNormalizationInvalid; }
         }
 
-        public CommonTrackingSourceStatus Status
+        public TrackingSourceStatus Status
         {
             get { return ResolveStatus(_running, _stateMachine, _latestFrame); }
         }
@@ -208,19 +207,19 @@ namespace Tracking.Runtime
             }
         }
 
-        private static CommonTrackingSourceStatus ResolveStatus(bool running, CommonArmTrackingStateMachine stateMachine, ArmTrackingFrame latestFrame)
+        private static TrackingSourceStatus ResolveStatus(bool running, CommonArmTrackingStateMachine stateMachine, ArmTrackingFrame latestFrame)
         {
             if (!running || !stateMachine.ConnectionWatchdog.IsConnected(DateTime.UtcNow))
             {
-                return CommonTrackingSourceStatus.Disconnected;
+                return TrackingSourceStatus.Disconnected;
             }
 
             if (latestFrame == null || !latestFrame.Tracked)
             {
-                return CommonTrackingSourceStatus.NoPerson;
+                return TrackingSourceStatus.NoPerson;
             }
 
-            return latestFrame.IsNormalizedValid ? CommonTrackingSourceStatus.Tracking : CommonTrackingSourceStatus.TrackingButNormalizationInvalid;
+            return latestFrame.IsNormalizedValid ? TrackingSourceStatus.Tracking : TrackingSourceStatus.TrackingButNormalizationInvalid;
         }
 
         private void InfoOnce(string key, string message)
@@ -276,10 +275,10 @@ namespace Tracking.Runtime
 
         public bool IsTracked
         {
-            get { return Status == CommonTrackingSourceStatus.Tracking || Status == CommonTrackingSourceStatus.TrackingButNormalizationInvalid; }
+            get { return Status == TrackingSourceStatus.Tracking || Status == TrackingSourceStatus.TrackingButNormalizationInvalid; }
         }
 
-        public CommonTrackingSourceStatus Status
+        public TrackingSourceStatus Status
         {
             get { return ResolveStatus(_started, _stateMachine, _latestFrame); }
         }
@@ -524,10 +523,10 @@ namespace Tracking.Runtime
 
         public bool IsTracked
         {
-            get { return Status == CommonTrackingSourceStatus.Tracking || Status == CommonTrackingSourceStatus.TrackingButNormalizationInvalid; }
+            get { return Status == TrackingSourceStatus.Tracking || Status == TrackingSourceStatus.TrackingButNormalizationInvalid; }
         }
 
-        public CommonTrackingSourceStatus Status
+        public TrackingSourceStatus Status
         {
             get { return ResolveStatus(_running, _stateMachine, _latestFrame); }
         }
@@ -638,19 +637,19 @@ namespace Tracking.Runtime
             }
         }
 
-        private static CommonTrackingSourceStatus ResolveStatus(bool running, CommonArmTrackingStateMachine stateMachine, ArmTrackingFrame latestFrame)
+        private static TrackingSourceStatus ResolveStatus(bool running, CommonArmTrackingStateMachine stateMachine, ArmTrackingFrame latestFrame)
         {
             if (!running || !stateMachine.ConnectionWatchdog.IsConnected(DateTime.UtcNow))
             {
-                return CommonTrackingSourceStatus.Disconnected;
+                return TrackingSourceStatus.Disconnected;
             }
 
             if (latestFrame == null || !latestFrame.Tracked)
             {
-                return CommonTrackingSourceStatus.NoPerson;
+                return TrackingSourceStatus.NoPerson;
             }
 
-            return latestFrame.IsNormalizedValid ? CommonTrackingSourceStatus.Tracking : CommonTrackingSourceStatus.TrackingButNormalizationInvalid;
+            return latestFrame.IsNormalizedValid ? TrackingSourceStatus.Tracking : TrackingSourceStatus.TrackingButNormalizationInvalid;
         }
 
         private void InfoOnce(string key, string message)
