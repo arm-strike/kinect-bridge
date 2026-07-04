@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 16
+VisualStudioVersion = 16.0.28701.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracking.Common", "Tracking.Common\Tracking.Common.csproj", "{9F34E215-3A5F-47E6-A9BF-1E08E9F7D8B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectBridge", "KinectBridge\KinectBridge.csproj", "{2B3A6A83-5E2E-4C15-B8C1-4C8A0E2F8B7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracking.Common.Tests", "Tracking.Common.Tests\Tracking.Common.Tests.csproj", "{B5F6A7E1-6F13-4E1E-99B5-9A4A49D4F211}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F34E215-3A5F-47E6-A9BF-1E08E9F7D8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F34E215-3A5F-47E6-A9BF-1E08E9F7D8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F34E215-3A5F-47E6-A9BF-1E08E9F7D8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F34E215-3A5F-47E6-A9BF-1E08E9F7D8B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3A6A83-5E2E-4C15-B8C1-4C8A0E2F8B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3A6A83-5E2E-4C15-B8C1-4C8A0E2F8B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3A6A83-5E2E-4C15-B8C1-4C8A0E2F8B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3A6A83-5E2E-4C15-B8C1-4C8A0E2F8B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F6A7E1-6F13-4E1E-99B5-9A4A49D4F211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F6A7E1-6F13-4E1E-99B5-9A4A49D4F211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F6A7E1-6F13-4E1E-99B5-9A4A49D4F211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F6A7E1-6F13-4E1E-99B5-9A4A49D4F211}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
