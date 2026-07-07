@@ -125,6 +125,8 @@ namespace KinectBridge.Tracking.Tests
             Assert.Equal(0f, result.NormalizedJoints.shoulderCenter.x, 0.0001f, "normalized shoulderCenter.x");
             Assert.Equal(0f, result.NormalizedJoints.shoulderCenter.y, 0.0001f, "normalized shoulderCenter.y");
             Assert.Equal(0f, result.NormalizedJoints.shoulderCenter.z, 0.0001f, "normalized shoulderCenter.z");
+            Assert.Equal(0f, result.NormalizedJoints.spine.x, 0.0001f, "normalized spine.x");
+            Assert.Equal(0f, result.NormalizedJoints.hipCenter.x, 0.0001f, "normalized hipCenter.x");
             Assert.Equal(0.4f, result.ShoulderWidthMeters, 0.0001f, "shoulder width");
             Assert.Equal(-0.5f, result.NormalizedJoints.shoulderLeft.x, 0.0001f, "normalized left shoulder");
             Assert.Equal(0.5f, result.NormalizedJoints.shoulderRight.x, 0.0001f, "normalized right shoulder");
@@ -201,6 +203,7 @@ namespace KinectBridge.Tracking.Tests
             Assert.True(metrics.LeftHandTowardKinectSpeedMetersPerSecond > 0.0, "toward Kinect speed");
             Assert.True(metrics.LeftArmExtensionNormalized > 0.0, "extension");
             Assert.True(metrics.LeftElbowAngleDegrees > 0.0, "elbow angle");
+            Assert.True(metrics.LeftHandForwardFromShoulderMeters > 0.0, "left forward from shoulder");
         }
 
         private static void TestConnectionTimeout()
@@ -268,6 +271,8 @@ namespace KinectBridge.Tracking.Tests
         {
             return "{"
                 + "\"shoulderCenter\":" + BuildWireJointJson(0f, 1.4f, 2.0f) + ","
+                + "\"spine\":" + BuildWireJointJson(0f, 1.2f, 2.0f) + ","
+                + "\"hipCenter\":" + BuildWireJointJson(0f, 1.0f, 2.0f) + ","
                 + "\"shoulderLeft\":" + BuildWireJointJson(-0.2f, 1.4f, 2.0f) + ","
                 + "\"elbowLeft\":" + BuildWireJointJson(-0.3f, 1.1f, 2.0f) + ","
                 + "\"wristLeft\":" + BuildWireJointJson(-0.35f, 0.85f, 2.0f) + ","
@@ -307,6 +312,8 @@ namespace KinectBridge.Tracking.Tests
             return new ArmTrackingJointCollection
             {
                 shoulderCenter = new ArmTrackingJointSample { x = 0f, y = 1.4f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
+                spine = new ArmTrackingJointSample { x = 0f, y = 1.2f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
+                hipCenter = new ArmTrackingJointSample { x = 0f, y = 1.0f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
                 shoulderLeft = new ArmTrackingJointSample { x = -0.2f, y = 1.4f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
                 elbowLeft = new ArmTrackingJointSample { x = -0.3f, y = 1.1f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
                 wristLeft = new ArmTrackingJointSample { x = -0.35f, y = 0.85f, z = 2.0f, state = (int)ArmTrackingJointState.Tracked },
@@ -323,6 +330,8 @@ namespace KinectBridge.Tracking.Tests
             return new ArmTrackingJointCollection
             {
                 shoulderCenter = new ArmTrackingJointSample { x = 0f, y = 1.4f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },
+                spine = new ArmTrackingJointSample { x = 0f, y = 1.2f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },
+                hipCenter = new ArmTrackingJointSample { x = 0f, y = 1.0f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },
                 shoulderLeft = new ArmTrackingJointSample { x = -0.2f, y = 1.4f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },
                 elbowLeft = new ArmTrackingJointSample { x = -0.3f, y = 1.1f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },
                 wristLeft = new ArmTrackingJointSample { x = -0.35f, y = 0.85f, z = 1.9f, state = (int)ArmTrackingJointState.Tracked },

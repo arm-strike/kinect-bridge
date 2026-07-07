@@ -75,6 +75,12 @@ namespace KinectBridge.Tracking
         [DataMember(Name = "shoulderCenter")]
         public WireJointSampleDto shoulderCenter;
 
+        [DataMember(Name = "spine")]
+        public WireJointSampleDto spine;
+
+        [DataMember(Name = "hipCenter")]
+        public WireJointSampleDto hipCenter;
+
         [DataMember(Name = "shoulderLeft")]
         public WireJointSampleDto shoulderLeft;
 
@@ -161,6 +167,12 @@ namespace KinectBridge.Tracking
         [DataMember(Name = "shoulderCenter")]
         public ArmTrackingJointSample shoulderCenter;
 
+        [DataMember(Name = "spine")]
+        public ArmTrackingJointSample spine;
+
+        [DataMember(Name = "hipCenter")]
+        public ArmTrackingJointSample hipCenter;
+
         [DataMember(Name = "shoulderLeft")]
         public ArmTrackingJointSample shoulderLeft;
 
@@ -190,6 +202,8 @@ namespace KinectBridge.Tracking
             return new ArmTrackingJointCollection
             {
                 shoulderCenter = CloneJoint(shoulderCenter),
+                spine = CloneJoint(spine),
+                hipCenter = CloneJoint(hipCenter),
                 shoulderLeft = CloneJoint(shoulderLeft),
                 elbowLeft = CloneJoint(elbowLeft),
                 wristLeft = CloneJoint(wristLeft),
@@ -321,6 +335,10 @@ namespace KinectBridge.Tracking
         public double LeftArmExtensionNormalized { get; set; }
 
         public double RightArmExtensionNormalized { get; set; }
+
+        public double LeftHandForwardFromShoulderMeters { get; set; }
+
+        public double RightHandForwardFromShoulderMeters { get; set; }
     }
 
     [Serializable]
@@ -557,6 +575,8 @@ namespace KinectBridge.Tracking
             errorMessage = null;
 
             if (!TryConvertJoint("shoulderCenter", wireJoints.shoulderCenter, out joints.shoulderCenter, out error, out errorMessage)) return false;
+            if (!TryConvertOptionalJoint(wireJoints.spine, out joints.spine, out error, out errorMessage)) return false;
+            if (!TryConvertOptionalJoint(wireJoints.hipCenter, out joints.hipCenter, out error, out errorMessage)) return false;
             if (!TryConvertJoint("shoulderLeft", wireJoints.shoulderLeft, out joints.shoulderLeft, out error, out errorMessage)) return false;
             if (!TryConvertJoint("elbowLeft", wireJoints.elbowLeft, out joints.elbowLeft, out error, out errorMessage)) return false;
             if (!TryConvertJoint("wristLeft", wireJoints.wristLeft, out joints.wristLeft, out error, out errorMessage)) return false;
@@ -567,6 +587,20 @@ namespace KinectBridge.Tracking
             if (!TryConvertJoint("handRight", wireJoints.handRight, out joints.handRight, out error, out errorMessage)) return false;
 
             return true;
+        }
+
+        private static bool TryConvertOptionalJoint(WireJointSampleDto wireJoint, out ArmTrackingJointSample joint, out WirePacketValidationError error, out string errorMessage)
+        {
+            joint = null;
+            error = WirePacketValidationError.None;
+            errorMessage = null;
+
+            if (wireJoint == null)
+            {
+                return true;
+            }
+
+            return TryConvertJoint("optional", wireJoint, out joint, out error, out errorMessage);
         }
 
         private static bool TryConvertJoint(string jointName, WireJointSampleDto wireJoint, out ArmTrackingJointSample joint, out WirePacketValidationError error, out string errorMessage)

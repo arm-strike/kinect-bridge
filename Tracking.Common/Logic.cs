@@ -178,6 +178,8 @@ namespace KinectBridge.Tracking
             ArmTrackingJointCollection normalized = new ArmTrackingJointCollection
             {
                 shoulderCenter = CreateNormalizedOrigin(centerState),
+                spine = NormalizeJoint(raw.spine, center, width),
+                hipCenter = NormalizeJoint(raw.hipCenter, center, width),
                 shoulderLeft = NormalizeJoint(raw.shoulderLeft, center, width),
                 elbowLeft = NormalizeJoint(raw.elbowLeft, center, width),
                 wristLeft = NormalizeJoint(raw.wristLeft, center, width),
@@ -277,6 +279,8 @@ namespace KinectBridge.Tracking
             metrics.RightShoulderToHandDistanceMeters = Distance(curr.shoulderRight, curr.handRight);
             metrics.LeftArmExtensionNormalized = metrics.LeftShoulderToHandDistanceMeters / currentFrame.ShoulderWidthMeters;
             metrics.RightArmExtensionNormalized = metrics.RightShoulderToHandDistanceMeters / currentFrame.ShoulderWidthMeters;
+            metrics.LeftHandForwardFromShoulderMeters = curr.shoulderLeft.z - curr.handLeft.z;
+            metrics.RightHandForwardFromShoulderMeters = curr.shoulderRight.z - curr.handRight.z;
             return true;
         }
 

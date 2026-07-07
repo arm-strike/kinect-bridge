@@ -50,6 +50,18 @@ namespace KinectBridge.Tracking
         [DataMember(Name = "shoulderCenter")]
         public ArmTrackingJointSample shoulderCenter;
 
+        [DataMember(Name = "spine")]
+        public ArmTrackingJointSample spine;
+
+        [DataMember(Name = "hipCenter")]
+        public ArmTrackingJointSample hipCenter;
+
+        [DataMember(Name = "spine")]
+        public ArmTrackingJointSample spine;
+
+        [DataMember(Name = "hipCenter")]
+        public ArmTrackingJointSample hipCenter;
+
         [DataMember(Name = "shoulderLeft")]
         public ArmTrackingJointSample shoulderLeft;
 
@@ -79,6 +91,10 @@ namespace KinectBridge.Tracking
             return new ArmTrackingJointCollection
             {
                 shoulderCenter = CloneJoint(shoulderCenter),
+                spine = CloneJoint(spine),
+                hipCenter = CloneJoint(hipCenter),
+                spine = CloneJoint(spine),
+                hipCenter = CloneJoint(hipCenter),
                 shoulderLeft = CloneJoint(shoulderLeft),
                 elbowLeft = CloneJoint(elbowLeft),
                 wristLeft = CloneJoint(wristLeft),
@@ -210,5 +226,13 @@ namespace KinectBridge.Tracking
         public double LeftArmExtensionNormalized { get; set; }
 
         public double RightArmExtensionNormalized { get; set; }
+
+        public double LeftHandForwardFromShoulderMeters { get; set; }
+
+        public double RightHandForwardFromShoulderMeters { get; set; }
+
+        public double LeftHandForwardFromShoulderMeters { get; set; }
+
+        public double RightHandForwardFromShoulderMeters { get; set; }
     }
 }

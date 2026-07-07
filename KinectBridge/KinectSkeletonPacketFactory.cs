@@ -34,6 +34,8 @@ namespace KinectBridge
         {
             ArmTrackingJointCollection joints = new ArmTrackingJointCollection();
             joints.shoulderCenter = ConvertJoint(skeleton, JointType.ShoulderCenter);
+            joints.spine = ConvertJoint(skeleton, JointType.Spine);
+            joints.hipCenter = ConvertJoint(skeleton, JointType.HipCenter);
             joints.shoulderLeft = ConvertJoint(skeleton, JointType.ShoulderLeft);
             joints.elbowLeft = ConvertJoint(skeleton, JointType.ElbowLeft);
             joints.wristLeft = ConvertJoint(skeleton, JointType.WristLeft);
