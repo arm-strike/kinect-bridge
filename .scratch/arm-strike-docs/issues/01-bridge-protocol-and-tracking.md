@@ -14,4 +14,4 @@ Status: `ready-for-agent`
 - ロック対象を失っている5秒間に別人物へ切り替わらない。
 - エラー・切断・ストール時に、Bridge 停止によるタイムアウトと区別可能な状態が発行される。
 
-Cross-repo consumer: [Unity Kinect specification](../../../../arm-strike-game/.scratch/arm-strike-docs/spec.md)
+Cross-repo consumer: [Unity Kinect specification](https://github.com/arm-strike/arm-strike-game/blob/feat/kinect-controler/.scratch/arm-strike-docs/spec.md)
